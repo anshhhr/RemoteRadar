@@ -1,8 +1,43 @@
 export default function Home() {
   return (
-    <div>
-      <h1>RemoteRadar</h1>
-      <p>Find remote jobs for developers</p>
-    </div>
+    <main className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <div className="bg-white border-b border-gray-200 py-12 px-6 text-center">
+        <h1 className="text-4xl font-bold text-gray-900 mb-3">
+          Find Remote Developer Jobs
+        </h1>
+        <p className="text-gray-500 text-lg">
+          Handpicked remote jobs for developers. Updated daily.
+        </p>
+      </div>
+
+      {/* Jobs Section */}
+      <div className="max-w-3xl mx-auto px-6 py-8">
+        <p className="text-gray-400 text-sm mb-4">Showing 0 jobs</p>
+
+        {/* Job Card */}
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-4">
+          <div className="flex justify-between items-start">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Frontend Developer
+              </h2>
+              <p className="text-gray-500 text-sm mt-1">Acme Corp</p>
+            </div>
+            <span className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">
+              Remote
+            </span>
+          </div>
+          <div className="flex gap-2 mt-4">
+            <span className="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">
+              React
+            </span>
+            <span className="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">
+              TypeScript
+            </span>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }
