@@ -7,7 +7,7 @@ export default async function Home() {
   );
   const data = await response.json();
   const jobs = data.jobs || [];
-  // new section
+
   return (
     <main className="min-h-screen bg-gray-50">
       <div className="bg-white border-b border-gray-200 py-12 px-6 text-center">

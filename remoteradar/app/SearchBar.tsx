@@ -1,4 +1,4 @@
-"use client"; // ← THIS makes it a client component
+"use client";
 
 import { useState } from "react";
 
@@ -16,7 +16,6 @@ export default function SearchBar({ jobs }) {
 
   return (
     <div>
-      {/* Search + Filter Bar */}
       <div className="flex gap-3 mb-6">
         <input
           type="text"
@@ -37,12 +36,10 @@ export default function SearchBar({ jobs }) {
         </select>
       </div>
 
-      {/* Job Count */}
       <p className="text-gray-400 text-sm mb-4">
         Showing {filtered.length} jobs
       </p>
 
-      {/* Job Cards */}
       {filtered.map((job) => (
         <div
           key={job.id}
