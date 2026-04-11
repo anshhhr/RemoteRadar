@@ -7,13 +7,20 @@ export default function SearchBar({ jobs }) {
   const [jobType, setJobType] = useState("all");
 
   const filtered = jobs.filter((job) => {
-    const matchesSearch = job.jobTitle
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const matchesType = jobType === "all" || job.jobType === jobType;
+    const title = (job.jobTitle || "").toLowerCase();
+    const company = (job.companyName || "").toLowerCase();
+    const query = search.toLowerCase();
+
+    const matchesSearch =
+      search === "" || title.includes(query) || company.includes(query);
+
+    const matchesType =
+      jobType === "all" ||
+      (job.jobType || "").toLowerCase() === jobType.toLowerCase();
+
     return matchesSearch && matchesType;
   });
-
+  console.log("Jobs data:", jobs[0]);
   return (
     <div>
       <div className="flex gap-3 mb-6">
@@ -22,7 +29,7 @@ export default function SearchBar({ jobs }) {
           placeholder="Search jobs..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 border border-gray-200 rounded-lg px-4 py-2 text-sm outline-none focus:border-blue-400"
+          className="flex-1 border border-gray-200 text-gray-900 rounded-lg px-4 py-2 text-sm outline-none focus:border-blue-400"
         />
         <select
           value={jobType}
@@ -48,7 +55,7 @@ export default function SearchBar({ jobs }) {
           <div className="flex justify-between items-start">
             <div>
               <h2 className="text-lg font-semibold text-gray-900">
-                {job.jobTitle}
+                {job.jobTitle || job.title}
               </h2>
               <p className="text-gray-500 text-sm mt-1">{job.companyName}</p>
             </div>
