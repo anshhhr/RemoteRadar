@@ -1,11 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SearchBar({ jobs }) {
   const [search, setSearch] = useState("");
   const [jobType, setJobType] = useState("all");
+  const router = useRouter();
 
   const filtered = jobs.filter((job) => {
     const title = (job.jobTitle || "").toLowerCase();
@@ -21,7 +22,7 @@ export default function SearchBar({ jobs }) {
 
     return matchesSearch && matchesType;
   });
-  console.log("Jobs data:", jobs[0]);
+
   return (
     <div>
       <div className="flex gap-3 mb-6">
@@ -49,31 +50,34 @@ export default function SearchBar({ jobs }) {
       </p>
 
       {filtered.map((job) => (
-        <Link href={`/jobs/${job.id}`} key={job.id}>
-          <div
-            key={job.id}
-            className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-4"
-          >
-            <div className="flex justify-between items-start">
-              <div>
-                <h2 className="text-lg font-semibold text-gray-900">
-                  {job.jobTitle || job.title}
-                </h2>
-                <p className="text-gray-500 text-sm mt-1">{job.companyName}</p>
-              </div>
-              <span className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">
-                Remote
-              </span>
+        <div
+          key={job.id}
+          onClick={() =>
+            router.push(
+              `/jobs/${job.id}?title=${encodeURIComponent(job.jobTitle)}&company=${encodeURIComponent(job.companyName)}&type=${job.jobType || ""}`,
+            )
+          }
+          className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-4 cursor-pointer hover:shadow-md transition-shadow"
+        >
+          <div className="flex justify-between items-start">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900">
+                {job.jobTitle || job.title}
+              </h2>
+              <p className="text-gray-500 text-sm mt-1">{job.companyName}</p>
             </div>
-            <div className="flex gap-2 mt-4 flex-wrap">
-              {job.jobType && (
-                <span className="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">
-                  {job.jobType}
-                </span>
-              )}
-            </div>
+            <span className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">
+              Remote
+            </span>
           </div>
-        </Link>
+          <div className="flex gap-2 mt-4 flex-wrap">
+            {job.jobType && (
+              <span className="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">
+                {job.jobType}
+              </span>
+            )}
+          </div>
+        </div>
       ))}
     </div>
   );
