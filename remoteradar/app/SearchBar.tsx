@@ -1,25 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SearchBar({ jobs }) {
   const [search, setSearch] = useState("");
   const [jobType, setJobType] = useState("all");
-  const router = useRouter();
 
   const filtered = jobs.filter((job) => {
     const title = (job.jobTitle || "").toLowerCase();
     const company = (job.companyName || "").toLowerCase();
     const query = search.toLowerCase();
-
     const matchesSearch =
       search === "" || title.includes(query) || company.includes(query);
-
     const matchesType =
       jobType === "all" ||
       (job.jobType || "").toLowerCase() === jobType.toLowerCase();
-
     return matchesSearch && matchesType;
   });
 
@@ -31,7 +27,7 @@ export default function SearchBar({ jobs }) {
           placeholder="Search jobs..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 border border-gray-200 text-gray-900 rounded-lg px-4 py-2 text-sm outline-none focus:border-blue-400"
+          className="flex-1 border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-900 outline-none focus:border-blue-400"
         />
         <select
           value={jobType}
@@ -50,34 +46,28 @@ export default function SearchBar({ jobs }) {
       </p>
 
       {filtered.map((job) => (
-        <div
-          key={job.id}
-          onClick={() =>
-            router.push(
-              `/jobs/${job.id}?title=${encodeURIComponent(job.jobTitle)}&company=${encodeURIComponent(job.companyName)}&type=${job.jobType || ""}`,
-            )
-          }
-          className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-4 cursor-pointer hover:shadow-md transition-shadow"
-        >
-          <div className="flex justify-between items-start">
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900">
-                {job.jobTitle || job.title}
-              </h2>
-              <p className="text-gray-500 text-sm mt-1">{job.companyName}</p>
-            </div>
-            <span className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">
-              Remote
-            </span>
-          </div>
-          <div className="flex gap-2 mt-4 flex-wrap">
-            {job.jobType && (
-              <span className="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">
-                {job.jobType}
+        <Link href={`/jobs/${job.id}`} key={job.id}>
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-4 hover:shadow-md transition-shadow cursor-pointer">
+            <div className="flex justify-between items-start">
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  {job.jobTitle}
+                </h2>
+                <p className="text-gray-500 text-sm mt-1">{job.companyName}</p>
+              </div>
+              <span className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">
+                Remote
               </span>
-            )}
+            </div>
+            <div className="flex gap-2 mt-4 flex-wrap">
+              {job.jobType && (
+                <span className="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">
+                  {job.jobType}
+                </span>
+              )}
+            </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );
